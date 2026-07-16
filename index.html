@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>循环播放</title>
+    <style>
+        /* 全屏设置 */
+        body, html { 
+            margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; 
+        }
+        
+        /* 背景图设置 */
+        body {
+            background-image: url('bg.png'); /* ✅ 已改为 .png */
+            background-size: cover;
+            background-position: center;
+            cursor: pointer; /* 鼠标变手型，暗示可点击 */
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ❌ 已删除提示文字 div -->
+
+    <!-- 音频标签 -->
+    <audio id="myAudio" loop preload="auto">
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        var audio = document.getElementById('myAudio');
+        var isPlaying = false;
+
+        // 1. 尝试自动播放
+        window.onload = function() {
+            var promise = audio.play();
+            if (promise !== undefined) {
+                promise.then(function() {
+                    isPlaying = true; // 自动播放成功
+                }).catch(function() {
+                    // 被拦截，等待点击
+                });
+            }
+        };
+
+        // 2. 点击任意位置开始播放（无提示语，静默启动）
+        document.body.addEventListener('click', function() {
+            if (!isPlaying) {
+                audio.play();
+                isPlaying = true;
+            }
+        });
+    </script>
+</body>
+</html>
